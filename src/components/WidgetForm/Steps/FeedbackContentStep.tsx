@@ -1,0 +1,71 @@
+import { FormEvent, useState } from "react";
+import { ArrowLeft } from "phosphor-react";
+import { AcceptedFeedbackTypes } from "..";
+import { CloseButton } from "../../CloseButton";
+import { feedbackTypes } from '../index';
+import { ScreenshotButton } from "../ScreenshotButton";
+
+interface FeedbackContentStepsProps {
+    feedbackType: AcceptedFeedbackTypes;
+    onFeedbackRestartRequested: ()=>void;
+    onFeedbackSent: ()=>void;
+}
+
+export function FeedbackContentStep({ feedbackType, onFeedbackRestartRequested, onFeedbackSent }:FeedbackContentStepsProps ){
+    const feedbackTypeInfo = feedbackTypes[feedbackType];
+    const [ screenshot, setScreenshot ] = useState<string | null >(null);
+    const [ comment, setComment] = useState('');
+  
+    function handleSubmitFeedback(event: FormEvent){
+        console.log(comment, screenshot)
+        event.preventDefault();
+        onFeedbackSent();  
+    }
+
+    return  (
+        <>
+          <header>
+              <button onClick={onFeedbackRestartRequested} type='button' className='absolute top-5 left-5 text-zinc-400 hover:text-zinc-100'>
+                  <ArrowLeft weight='bold' className='w-4 h-4'/>
+              </button>
+            <span className="text-xl leading-6 flex gap-2 justify-center">
+                <img 
+                    src={feedbackTypeInfo.image.source}
+                    alt={feedbackTypeInfo.image.alt}
+                    className='w-6 h-6'
+                />
+
+                {feedbackTypeInfo.title }
+            </span>
+
+            <CloseButton />
+          </header>
+    
+         <form 
+            onSubmit={handleSubmitFeedback}
+            className='my-4 w-full'>
+             <textarea
+                onChange={(event)=> setComment(event.target.value)}
+                className='p-2 min-w-[304px] w-full min-h-[112px] text-sm placeholder-zinc-400 text-zinc-100 border-zinc-600 bg-transparent rounded-md focus:border-brand-500 focus:ring-brand-500 focus:ring-1 resize-none focus:outline-none scrollbar scrollbar-thumb-zinc-700 scrollbar-track-transparent scrollbar-thin'
+                placeholder='Write here in details what is going on...'
+                >
+             </textarea>
+             <footer className='flex gap-2 mt-2'>
+                <ScreenshotButton
+                    onScreenShotTaken={setScreenshot}
+                    screenshotImage={screenshot}
+                />
+
+                 <button
+                    disabled={comment.length === 0 ? true: false }
+                    type='submit'
+                    className='p-2 bg-brand-500 rounded-md border-transparent flex-1 justify-center items-center text-sm hover:bg-brand-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-brand-500 transition-colors disabled:opacity-50 disabled:hover:bg-brand-500'
+                 > 
+                    Send Feedback    
+                 </button>
+             </footer>
+
+        </form>
+        </>
+      );
+};

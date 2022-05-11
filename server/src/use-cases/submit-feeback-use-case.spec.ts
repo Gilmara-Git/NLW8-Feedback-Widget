@@ -27,6 +27,9 @@ describe('Submit feedback', ()=>{
         comment: 'It is an example',
         screenshot: 'data:image/png;base64,sdgkajsdgjskldgjakdjglkajdglja'
     })).rejects.toThrow();
+
+    expect(createFeedbackSpy).toHaveBeenCalled();
+    expect(sendMailSpy).toHaveBeenCalled();
 });
     it('should not be able to submit a feedback without comment', async()=>{
         await expect(submitFeedback.execute({
@@ -35,6 +38,8 @@ describe('Submit feedback', ()=>{
             screenshot: 'data:image/png;base64,sdgkajsdgjskldgjakdjglkajdglja'
         })).rejects.toThrow();
     })
+    expect(createFeedbackSpy).toHaveBeenCalled();
+    expect(sendMailSpy).toHaveBeenCalled();
 
     it('should not be able to submit a feedback if screenshot does not start with format data:image/png;base64', async ()=>{  
         await expect(submitFeedback.execute({
@@ -42,6 +47,8 @@ describe('Submit feedback', ()=>{
             comment: 'It is an example',
             screenshot: 'test.jpeg'
         })).rejects.toThrow();
+        expect(createFeedbackSpy).toHaveBeenCalled();
+        expect(sendMailSpy).toHaveBeenCalled();
    });
 }
  )

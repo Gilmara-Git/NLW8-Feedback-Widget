@@ -1,7 +1,8 @@
 // contract/interface 
+
 export interface SendMailAdapter{
     subject: string;
-    body: string |string[] ;
+    body: string;
 }
 
 export interface MailAdapter {

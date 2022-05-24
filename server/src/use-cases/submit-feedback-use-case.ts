@@ -9,7 +9,7 @@ interface SubmitFeedbackUseCaseRequest {
 
 
 // this function / use case has only one action (execute)
-// principio de inversao de dependnecia qe do a contructor
+// principio de inversao de dependencia 
 export class SubmitFeedbackUseCase{   
     constructor(
         private feedbacksRepository: FeedbacksRepository,
@@ -18,6 +18,7 @@ export class SubmitFeedbackUseCase{
 
     async execute(request : SubmitFeedbackUseCaseRequest){
         const { type, comment, screenshot } = request;
+       
 // validacoes
         if(!comment){
             throw new Error('Comment is required.')
@@ -37,13 +38,23 @@ export class SubmitFeedbackUseCase{
             screenshot
         })
 
+//         const bodyToUint8 = new Uint8Array(
+// ,
+//         )
     
         await this.mailAdapter.sendMail({ 
             subject: 'New feedback',
-            body: [
+            body:[
                 `<div style="font-family: sans-serif; font-size: 16px; color: #111;">`,
                 `<p>Feedback type: ${type}</p>`,
-                `<p>Comment: ${comment}</p>`, ]
+                `<p>Comment: ${comment}</p>`,
+                !screenshot ? null : `<img width=400px height=500px src="${screenshot}"/>`,
+                `</div>`              
+            ].join('\n')
+                    
         })
     }
 }
+
+
+

@@ -6,7 +6,7 @@ interface FeedbackSuccessStepProps {
 
 export function FeedbackSuccessStep({onFeedbackRestartRequested}:FeedbackSuccessStepProps){
     return (
-        <>
+        <div className='flex items-center justify-center'>
             <header>
                 <CloseButton/>
             </header>
@@ -25,7 +25,7 @@ export function FeedbackSuccessStep({onFeedbackRestartRequested}:FeedbackSuccess
                     Send another feedback    
                 </button>
             </div>
-        </>
+        </div>
     )
 }
 

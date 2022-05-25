@@ -11,6 +11,6 @@ app.use(cors({
 app.use(express.json()); // middleware 
 app.use(routes);
 
-app.listen(3333, ()=>{
+app.listen(process.env.PORT || 3333, ()=>{
     console.log('I am a function that indicates the Http server is running')
 });
